@@ -16,12 +16,16 @@ class OAuthWorkerComponent extends Component {
 		// saving the controller reference for later use
 		$this->controller = $controller;
 		
+		configure::write('OAuth', array(
+			'access_token_lifetime' => 3600 * 24 * 30
+		));
+		
 	}
 	
 
 	public function authorize() {
 		
-		$this->oauth = new OAuth2($this->controller->OAuth2ServerAccessToken);		
+		$this->oauth = new OAuth2($this->controller->OAuth2ServerAccessToken, configure::read('OAuth'));		
 		
 		$userId = $this->controller->Auth->user('id'); // Use whatever method you have for identifying users.
 		$this->oauth->finishClientAuthorization($_POST["accept"] == "yes", $userId, $_POST);
@@ -40,7 +44,7 @@ class OAuthWorkerComponent extends Component {
 		try {
 			
 			$this->controller->loadModel('OAuth2Server.OAuth2ServerAccessToken');
-			$this->oauth = new OAuth2($this->controller->OAuth2ServerAccessToken);
+			$this->oauth = new OAuth2($this->controller->OAuth2ServerAccessToken, configure::read('OAuth'));
 			$token = $this->oauth->getBearerToken();
 			$data = $this->oauth->verifyAccessToken($token);
 			
