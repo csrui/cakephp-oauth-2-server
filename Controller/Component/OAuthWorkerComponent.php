@@ -10,6 +10,10 @@ class OAuthWorkerComponent extends Component {
 	
 	private $oauth = null;
 	
+	private $data = null;
+	
+	
+	
 	//called before Controller::beforeFilter()
 	public function initialize($controller) {
 		
@@ -38,21 +42,36 @@ class OAuthWorkerComponent extends Component {
 		
 	}
 	
+	/**
+	 * Get the user_id for the current access_token
+	 *
+	 * @return int
+	 * @author Rui Cruz
+	 */
+	public function getUserId() {
+		
+		return $this->data['user_id'];
+		
+	}
 	
-	public function getCurrentUserId() {
+	/**
+	 * Check if an access_token was received and it is valid
+	 *
+	 * @return array
+	 * @author Rui Cruz
+	 */
+	public function verifyToken() {
 		
 		try {
-			
+
 			$this->controller->loadModel('OAuth2Server.OAuth2ServerAccessToken');
 			$this->oauth = new OAuth2($this->controller->OAuth2ServerAccessToken, configure::read('OAuth'));
 			$token = $this->oauth->getBearerToken();
-			$data = $this->oauth->verifyAccessToken($token);
-			
-			return $data['user_id'];
+			$this->data = $this->oauth->verifyAccessToken($token);
 			
 		} catch (OAuth2ServerException $oauthError) {
 			$oauthError->sendHttpResponse();
-		}
+		}		
 		
 	}
 	
