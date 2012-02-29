@@ -12,6 +12,8 @@ class OAuthWorkerComponent extends Component {
 	
 	private $data = null;
 	
+	private $user = null;
+	
 	
 	
 	//called before Controller::beforeFilter()
@@ -51,6 +53,26 @@ class OAuthWorkerComponent extends Component {
 	public function getUserId() {
 		
 		return $this->data['user_id'];
+		
+	}
+	
+	/**
+	 * Gets all the user data
+	 *
+	 * @return void
+	 * @author Rui Cruz
+	 */
+	public function getUserData() {
+		
+		if (!empty($this->user)) return $this->user;
+		
+		# Let's fetch the user
+		$user_id = $this->getUserId();
+		
+		$this->controller->loadModel('User', $this->getUserId());
+		$this->user = $this->controller->User->read();
+		
+		return $this->user;
 		
 	}
 	
