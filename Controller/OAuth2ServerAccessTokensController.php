@@ -29,7 +29,9 @@ class OAuth2ServerAccessTokensController extends OAuth2ServerController {
 		
 	}
 	
-	public function token() {
+	public function access_token() {
+		
+		$this->autoRender = false;
 		
 		$this->OAuthWorker->token();
 		

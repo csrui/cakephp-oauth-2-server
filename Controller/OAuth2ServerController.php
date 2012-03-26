@@ -10,6 +10,7 @@ class OAuth2ServerController extends AppController {
 		parent::beforeFilter();
 		
 		$this->Auth->deny();
+		$this->Auth->allow('access_token');
 		
 	}
 	

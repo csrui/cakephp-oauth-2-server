@@ -1,9 +1,14 @@
 <?php 
 
 App::import('Vendor', 'OAuth2Server.OAuth2', array('file' => 'oauth2-php'.DS.'lib'.DS.'OAuth2.php'));
+
+
+
 App::uses('OAuth2ServerAccessToken', 'OAuth2Server/Model');
 
 class OAuthWorkerComponent extends Component {
+	
+	public $components = array('OAuth2Server.OAuthStorage');
 	
 		
 	private $controller = null;
@@ -31,7 +36,7 @@ class OAuthWorkerComponent extends Component {
 
 	public function authorize() {
 		
-		$this->oauth = new OAuth2($this->controller->OAuth2ServerAccessToken, configure::read('OAuth'));		
+		$this->oauth = new OAuth2($this->OAuthStorage, configure::read('OAuth'));		
 		
 		$userId = $this->controller->Auth->user('id'); // Use whatever method you have for identifying users.
 		$this->oauth->finishClientAuthorization($_POST["accept"] == "yes", $userId, $_POST);
@@ -86,8 +91,8 @@ class OAuthWorkerComponent extends Component {
 		
 		try {
 
-			$this->controller->loadModel('OAuth2Server.OAuth2ServerAccessToken');
-			$this->oauth = new OAuth2($this->controller->OAuth2ServerAccessToken, configure::read('OAuth'));
+			$this->oauth = new OAuth2($this->OAuthStorage, configure::read('OAuth'));
+			
 			$token = $this->oauth->getBearerToken();
 			$this->data = $this->oauth->verifyAccessToken($token);
 			
@@ -98,10 +103,10 @@ class OAuthWorkerComponent extends Component {
 	}
 	
 	public function token() {
-		
-		die(__FUNCTION__);
-		
+				
 		try {
+			
+			$this->oauth = new OAuth2($this->OAuthStorage, configure::read('OAuth'));
 			$this->oauth->grantAccessToken();
 		} catch (OAuth2ServerException $oauthError) {
 			$oauthError->sendHttpResponse();
