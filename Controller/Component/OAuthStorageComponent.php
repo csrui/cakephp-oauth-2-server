@@ -5,7 +5,7 @@ App::import('Vendor', 'OAuth2Server.IOAuth2GrantCode', array('file' => 'oauth2-p
 App::import('Vendor', 'OAuth2Server.IOAuth2RefreshTokens', array('file' => 'oauth2-php'.DS.'lib'.DS.'IOAuth2Refreshtokens.php'));
 
 App::uses('OAuth2ServerClient', 'OAuth2Server.Model');
-App::uses('OAuth2ServerAuthCode', 'OAuth2Server.Model');
+App::uses('OAuth2ServerAuthCode', 'OAuth2Server.Model'); 
 App::uses('OAuth2ServerAccessToken', 'OAuth2Server.Model');
 
 class OAuthStorageComponent extends Component implements IOAuth2Storage, IOAuth2GrantCode { //, IOAuth2RefreshTokens  {
