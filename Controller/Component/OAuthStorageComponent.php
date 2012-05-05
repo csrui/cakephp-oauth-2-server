@@ -13,6 +13,7 @@ class OAuthStorageComponent extends Component implements IOAuth2Storage, IOAuth2
 
 	public function setAuthCode($code, $client_id, $user_id, $redirect_uri, $expires, $scope = NULL) {
 		
+		App::uses('OAuth2ServerAuthCode', 'OAuth2Server.Model');
 		$OAuth2ServerAuthCode = new OAuth2ServerAuthCode();
 		
 		$data = compact('code', 'client_id', 'user_id', 'redirect_uri', 'expires', 'scope');
