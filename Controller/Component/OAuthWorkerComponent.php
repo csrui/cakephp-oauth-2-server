@@ -57,7 +57,7 @@ class OAuthWorkerComponent extends Component {
 	 */
 	public function getUserId() {
 		
-		return $this->data['user_id'];
+		return $this->data['user_id'] || $this->controller->Auth->user('id');
 		
 	}
 	
