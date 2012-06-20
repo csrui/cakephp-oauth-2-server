@@ -39,7 +39,8 @@ class OAuthWorkerComponent extends Component {
 		$this->oauth = new OAuth2($this->OAuthStorage, configure::read('OAuth'));		
 		
 		$userId = $this->controller->Auth->user('id'); // Use whatever method you have for identifying users.
-		$this->oauth->finishClientAuthorization($_POST["accept"] == "yes", $userId, $_POST);
+
+		$this->oauth->finishClientAuthorization($_POST["accept"], $userId, $_POST);
 		
 		try {
 			$auth_params = $this->oauth->getAuthorizeParams();
